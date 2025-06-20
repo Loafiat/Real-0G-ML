@@ -6,9 +6,9 @@ using UnityEngine;
 using Caputilla;
 using Locomotion;
 
-namespace CapuchinTemplate
+namespace RealZeroG
 {
-    [BepInPlugin(ModInfo.GUID, ModInfo.Name, ModInfo.Version)]
+    [BepInPlugin("insteal.realzerog", "RealZeroG", "1.0.0")]
     public class Init : BasePlugin
     {
         public static Init instance;
@@ -16,7 +16,7 @@ namespace CapuchinTemplate
 
         public override void Load()
         {
-            harmonyInstance = HarmonyPatcher.Patch(ModInfo.GUID);
+            harmonyInstance = HarmonyPatcher.Patch("insteal.realzerog");
             instance = this;
 
             AddComponent<Plugin>();
@@ -47,13 +47,7 @@ namespace CapuchinTemplate
         void FixedUpdate()
         {
             if (inModded && GameObject.Find("Global/Levels/Zero Core").activeInHierarchy)
-            {
-                Player.Instance.playerRigidbody.useGravity = false;
-            }
-            else 
-            {
-                Player.Instance.playerRigidbody.useGravity = true;
-            }
+                Player.Instance.playerRigidbody.AddForce(-Physics.gravity * Player.Instance.playerRigidbody.mass);
         }
     }
 }
