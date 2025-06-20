@@ -33,7 +33,7 @@ namespace CapuchinTemplate
 
     public class Plugin : MonoBehaviour
     {
-        static bool inModded = false;
+        private bool inModded = false;
 
         void Start()
         {
@@ -41,35 +41,14 @@ namespace CapuchinTemplate
             CaputillaManager.Instance.OnModdedLeave += OnModdedLeave;
         }
 
-        void OnModdedJoin()
-        {
-            inModded = true;
-        }
-
-        void OnModdedLeave()
-        {
-            inModded = false;
-        }
+        void OnModdedJoin() => inModded = true;
+        void OnModdedLeave() => inModded = false;
 
         void FixedUpdate()
         {
-            if (inModded)
+            if (inModded && GameObject.Find("Global/Levels/Zero Core").activeInHierarchy)
             {
-                if (GameObject.Find("Global/Levels/Zero Core").activeInHierarchy)
-                {
-                    if (inModded)
-                    {
-                        Player.Instance.playerRigidbody.useGravity = false;
-                    }
-                    else
-                    {
-                        Player.Instance.playerRigidbody.useGravity = true;
-                    }
-                }
-                else
-                {
-                    Player.Instance.playerRigidbody.useGravity = true;
-                }
+                Player.Instance.playerRigidbody.useGravity = false;
             }
             else 
             {
