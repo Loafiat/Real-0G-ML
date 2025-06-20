@@ -47,13 +47,7 @@ namespace CapuchinTemplate
         void FixedUpdate()
         {
             if (inModded && GameObject.Find("Global/Levels/Zero Core").activeInHierarchy)
-            {
-                Player.Instance.playerRigidbody.useGravity = false;
-            }
-            else 
-            {
-                Player.Instance.playerRigidbody.useGravity = true;
-            }
+                Player.Instance.playerRigidbody.AddForce(-Physics.gravity * Player.Instance.playerRigidbody.mass);
         }
     }
 }
