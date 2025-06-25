@@ -6,37 +6,17 @@ using UnityEngine;
 using Caputilla;
 using Locomotion;
 
+[assembly: MelonInfo(typeof(Plugin), "RealZeroG", "1.0.0", "Insteal")]
+
 namespace RealZeroG
 {
-    [BepInPlugin("insteal.realzerog", "RealZeroG", "1.0.0")]
-    public class Init : BasePlugin
-    {
-        public static Init instance;
-        public Harmony harmonyInstance;
-
-        public override void Load()
-        {
-            harmonyInstance = HarmonyPatcher.Patch("insteal.realzerog");
-            instance = this;
-
-            AddComponent<Plugin>();
-        }
-
-        public override bool Unload()
-        {
-            if (harmonyInstance != null)
-                HarmonyPatcher.Unpatch(harmonyInstance);
-
-            return true;
-        }
-    }
-
-    public class Plugin : MonoBehaviour
+    public class Plugin : MelonMod
     {
         private bool inModded = false;
 
-        void Start()
+        public override void OnMelonInitialize()
         {
+            // MelonLoader automatically
             CaputillaManager.Instance.OnModdedJoin += OnModdedJoin;
             CaputillaManager.Instance.OnModdedLeave += OnModdedLeave;
         }
@@ -44,7 +24,7 @@ namespace RealZeroG
         void OnModdedJoin() => inModded = true;
         void OnModdedLeave() => inModded = false;
 
-        void FixedUpdate()
+        override void OnFixedUpdate()
         {
             if (inModded && GameObject.Find("Global/Levels/Zero Core").activeInHierarchy)
                 Player.Instance.playerRigidbody.AddForce(-Physics.gravity * Player.Instance.playerRigidbody.mass);
